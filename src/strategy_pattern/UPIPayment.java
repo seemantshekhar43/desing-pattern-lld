@@ -1,4 +1,4 @@
-package strategy;
+package strategy_pattern;
 
 public class UPIPayment implements PaymentStrategy{
     private String upiID;
