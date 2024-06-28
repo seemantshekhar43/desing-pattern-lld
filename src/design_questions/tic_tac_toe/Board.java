@@ -41,19 +41,25 @@ public class Board {
         System.out.println(sb);
     }
 
-    public void addMark(int x, int y, Mark mark){
+    public boolean addMark(int x, int y, Mark mark){
+        if(!isCellEmpty(x, y)){
+            return false;
+        }
         grid[x][y] = mark;
+        return true;
     }
 
-    public void removeMark(Move move){
-        grid[move.getX()][move.getY()] = Mark.EMPTY;
+    public void removeMark(int x, int y){
+        grid[x][y] = Mark.EMPTY;
     }
 
     public boolean isCellEmpty(int x, int y){
-        return this.grid[x][y].equals(Mark.EMPTY);
+        return x >= 0 && x < this.nRows && y >= 0 && y < this.nCols && this.grid[x][y].equals(Mark.EMPTY);
     }
 
     public Mark[][] getGrid() {
         return grid;
     }
+
+
 }

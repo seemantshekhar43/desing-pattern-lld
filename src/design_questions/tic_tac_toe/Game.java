@@ -34,11 +34,6 @@ public class Game {
         this.gameStatus = GameStatus.NEW;
     }
 
-    public boolean validateMove(Move move) {
-        int x = move.getX();
-        int y = move.getY();
-        return x >= 0 && x < numRows && y >= 0 && y < numCols && this.board.isCellEmpty(x, y);
-    }
 
     public void checkGameStatus(Move move) {
         boolean isWinner = false;
@@ -109,17 +104,10 @@ public class Game {
     }
 
     public Move inputMoveFromPlayer(Scanner scanner) {
-        while (true) {
             System.out.print(currentPlayer.getName() + "'s[" + currentPlayer.getMark() + "] move. Enter cell coordinate(x, y) to place your mark:  ");
             int x = scanner.nextInt();
             int y = scanner.nextInt();
-            Move move = new Move(x, y, currentPlayer, currentPlayer.getMark());
-            if (validateMove(move)) {
-                return move;
-            } else {
-                System.out.println("Invalid move. Please try again!");
-            }
-        }
+            return new Move(x, y, currentPlayer, currentPlayer.getMark());
     }
 
     public void play() {
@@ -132,9 +120,12 @@ public class Game {
 
             //Input a valid move from player
             final Move move = inputMoveFromPlayer(scanner);
-
-            //play move
-            this.board.addMark(move.getX(), move.getY(), move.getMark());
+            boolean isAddedSuccessfully = this.board.addMark(move.getX(), move.getY(), move.getMark());
+            if(!isAddedSuccessfully){
+                System.out.println("Invalid move. Please try again!");
+                currentPlayerIndex--;
+                continue;
+            }
 
             //register move
             this.moves.push(move);
